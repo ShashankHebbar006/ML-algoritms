@@ -1,0 +1,35 @@
+x = np.array([1,2,3,4,5,6,7,8,9,10])
+y = np.array(x*2)
+
+w_arr = []
+b_arr = []
+mse_arr = []
+
+lr = 0.001
+w, b = 1, 0
+
+for i in range(200):
+    y_ = w*x + b
+
+    mse = np.mean((y - y_)**2)
+    mse_arr.append(mse)
+
+    d_dm = 2*np.mean((y-y_)*(-x))
+    d_db = 2*np.mean(y-y_)
+
+    w = w-(lr*d_dm)
+    b = b-(lr*d_db)
+    print(f"w : {w}, b : {b}, mse : {mse}")
+    w_arr.append(w)
+    b_arr.append(b)
+
+plt.scatter(w_arr,mse_arr)
+plt.xlabel('Weight (W)')
+plt.ylabel('MSE')
+plt.show()
+
+yh = w_arr[mse_arr.index(min(mse_arr))]*x + b_arr[mse_arr.index(min(mse_arr))]
+
+plt.scatter(x,y)
+plt.plot(x,yh)
+w_arr[mse_arr.index(min(mse_arr))]
