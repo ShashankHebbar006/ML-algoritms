@@ -1,0 +1,45 @@
+x = np.array([1,2,3,4,5,6,7,8,9,10])
+y = np.array(x**2)
+
+w1_arr = []
+w2_arr = []
+b_arr = []
+mse_arr = []
+
+lr = 0.00001
+b, w1, w2 = 0, 1, 2
+
+for i in range(100):
+    y_ = w1*x*x + w2*x + b
+
+    mse = np.mean((y - y_)**2)
+    mse_arr.append(mse)
+
+    d_dw1 = -2*np.mean((y-y_)*(x*x))
+    d_dw2 = -2*np.mean((y-y_)*x)
+    d_db = -2*np.mean(y-y_)
+
+    w1 -= (lr*d_dw1)
+    w2 -= (lr*d_dw2)
+    b -= (lr*d_db)
+    
+    w1_arr.append(w1)
+    w2_arr.append(w2)
+    b_arr.append(b)
+
+    #print(f"w1 : {w1}, w2 : {w2}, b : {b}, mse : {mse}, ")
+
+plt.scatter(w1_arr,mse_arr)
+plt.xlabel('Weight (W)')
+plt.ylabel('MSE')
+plt.show()
+
+ind = mse_arr.index(min(mse_arr))
+w1, w2, b = w1_arr[ind], w2_arr[ind], b_arr[ind]
+
+yh = w1*x*x + w2*x + b
+
+plt.scatter(x,y)
+plt.title("w1 vs cost fn")
+plt.plot(x,yh)
+plt.title("x vs y")
